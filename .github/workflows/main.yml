@@ -1,40 +1,31 @@
-name: Pruebita
+name: Build and Push Docker Compose Images
 
 on:
   push:
     branches:
-      - main  # Cambia según sea necesario
+      - main
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Clonar el repositorio
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Paso 2: Login a Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Paso 3: Build manual (mejor que usar docker-compose para subir)
-      - name: Build Docker image
+      - name: Build images from docker-compose
         run: |
-          docker build -t melany555/pruebita1:latest .
+          docker compose -f docker-compose.yml build
 
-      # Paso 4: Push Docker image
-      - name: Push Docker image
+      - name: Push images to Docker Hub
         run: |
-          docker push melany555/pruebita1:latest
+          docker compose -f docker-compose.yml push
 
-      # Paso 5: Verificar imágenes locales (debug)
-      - name: List Docker images
+      - name: Show built images
         run: docker images
-
-
-
-          
