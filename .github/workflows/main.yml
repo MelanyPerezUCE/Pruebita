@@ -55,5 +55,7 @@ jobs:
 
           # Subir las imágenes a Docker Hub
           docker-compose -f docker-compose.yml push
+          echo "Imagen subida."
+
 
           
